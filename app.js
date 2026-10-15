@@ -211,3 +211,16 @@ function refreshFooterArtMotion(){
 }
 motionPreference.addEventListener('change',refreshFooterArtMotion);
 refreshFooterArtMotion();
+
+// Start the hero sequence after the actual sandwich image is ready, including cold loads.
+const heroArt=document.querySelector('.hero-art');
+const heroImage=heroArt?.querySelector('.hero-sandwich');
+if(heroArt&&heroImage){
+ document.documentElement.classList.add('hero-sequence');
+ const revealHero=async()=>{
+  if(heroImage.decode){try{await heroImage.decode();}catch{}}
+  heroArt.dataset.heroReady='true';
+ };
+ if(heroImage.complete&&heroImage.naturalWidth)revealHero();
+ else heroImage.addEventListener('load',revealHero,{once:true});
+}
